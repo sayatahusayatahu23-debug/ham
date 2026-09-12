@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOMOREBI — 木漏れ日 フォーラム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #fafafa;
+    --paper: #ffffff;
+    --ink: #000000;
+    --purple: #A855F7;
+    --purple-dark: #9333ea;
+    --muted: #6b6b6b;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection { background: var(--purple); color: var(--paper); }
+
+  /* ===== NAVBAR ===== */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 4px solid var(--ink);
+    padding: 1rem 2rem;
+  }
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .logo-mark {
+    width: 42px;
+    height: 42px;
+    background: var(--purple);
+    border: 3px solid var(--ink);
+    display: grid;
+    place-items: center;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--paper);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .nav-links {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .nav-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.75rem 1.15rem;
+    background: var(--paper);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 120ms cubic-bezier(.22,1,.36,1), box-shadow 120ms ease;
+    box-shadow: 4px 4px 0 var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .nav-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .nav-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .nav-btn--purple { background: var(--purple); color: var(--paper); }
+  .nav-btn--black { background: var(--ink); color: var(--paper); }
+  .nav-btn-arrow {
+    font-size: 0.75rem;
+    transition: transform 200ms ease;
+  }
+  .nav-btn:hover .nav-btn-arrow { transform: translate(3px, -3px); }
+
+  /* ===== HERO ===== */
+  .hero {
+    border-bottom: 4px solid var(--ink);
+    padding: 6rem 2rem 5rem;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: end;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    background: var(--purple);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    padding: 0.4rem 0.85rem;
+    display: inline-block;
+    box-shadow: 4px 4px 0 var(--ink);
+    margin-bottom: 2rem;
+  }
+  .hero-title {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 9vw, 7.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.75rem;
+  }
+  .hero-title .line { display: block; overflow: hidden; }
+  .hero-title .word {
+    display: inline-block;
+    animation: rise 1s cubic-bezier(.22,1,.36,1) both;
+  }
+  .hero-title .word:nth-child(2) { animation-delay: 0.15s; }
+  @keyframes rise {
+    from { transform: translateY(110%); }
+    to { transform: translateY(0); }
+  }
+  .hero-title .accent {
+    color: var(--purple);
+    font-style: italic;
+  }
+  .hero-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    max-width: 32rem;
+    line-height: 1.65;
+    margin-bottom: 2.5rem;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .meta-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 0.875rem;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .meta-chip--live { background: var(--ink); color: var(--paper); }
+  .meta-chip--live::before {
+    content: '●';
+    color: var(--purple);
+    margin-right: 0.4rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  .hero-card {
+    background: var(--ink);
+    color: var(--paper);
+    border: 4px solid var(--ink);
+    padding: 1.75rem;
+    box-shadow: 10px 10px 0 var(--purple);
+    transform: rotate(-1deg);
+  }
+  .hero-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--purple);
+    margin-bottom: 1rem;
+  }
+  .hero-card-kanji {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 10vw, 4rem);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.05em;
+  }
+  .hero-card-reading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--purple);
+    margin-bottom: 0.5rem;
+  }
+  .hero-card-meaning {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    line-height: 1.55;
+  }
+  .hero-card-footer {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 2px dashed var(--purple);
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--purple);
+  }
+
+  /* ===== MARQUEE ===== */
+  .marquee {
+    background: var(--purple);
+    color: var(--paper);
+    border-bottom: 4px solid var(--ink);
+    padding: 0.9rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    gap: 2.5rem;
+    animation: marquee 30s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding-right: 2.5rem;
+  }
+  .marquee-track span { display: inline-flex; align-items: center; gap: 2.5rem; }
+  .marquee-track span::after { content: '◆'; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    padding: 6rem 2rem;
+    border-bottom: 4px solid var(--ink);
+  }
+  .section-inner { max-width: 1400px; margin: 0 auto; }
+  .section-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 4rem;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.875rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: 3px solid var(--ink);
+    box-shadow: 4px 4px 0 var(--purple);
+  }
+  .section-title {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .section-title em {
+    color: var(--purple);
+    font-style: italic;
+  }
+
+  /* ===== FORUM THREADS ===== */
+  .threads {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .thread {
+    background: var(--paper);
+    border: 4px solid var(--ink);
+    padding: 1.75rem;
+    box-shadow: 8px 8px 0 var(--ink);
+    transition: transform 200ms cubic-bezier(.22,1,.36,1), box-shadow 200ms ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .thread:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 11px 11px 0 var(--purple);
+  }
+  .thread-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.6rem;
+    background: var(--purple);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    margin-bottom: 1rem;
+  }
+  .thread-tag--black { background: var(--ink); color: var(--paper); }
+  .thread-tag--white { background: var(--paper); color: var(--ink); }
+  .thread-title {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 4vw, 1.45rem);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .thread-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .thread-snippet {
+    font-size: 0.93rem;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+  }
+  .thread-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 2px dashed var(--ink);
+  }
+  .thread-author {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+  
+  /* CUSTOM AVATAR */
+  .author-avatar {
+    width: 34px;
+    height: 34px;
+    background: var(--purple);
+    border: 2px solid var(--ink);
+    display: grid;
+    place-items: center;
+    overflow: hidden; /* Penting supaya foto tidak keluar kotak */
+    flex-shrink: 0;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Pastikan foto pas dan tidak terpotong aneh */
+    display: block;
+  }
+  .author-avatar--black { background: var(--ink); box-shadow: 2px 2px 0 var(--purple); }
+  .author-avatar--white { background: var(--paper); box-shadow: 2px 2px 0 var(--ink); }
+
+  .thread-stats {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  /* ===== STATS ===== */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .stat-card {
+    border: 4px solid var(--ink);
+    padding: 1.5rem;
+    background: var(--paper);
+    box-shadow: 6px 6px 0 var(--ink);
+    overflow: hidden;
+  }
+  .stat-card--purple { background: var(--purple); color: var(--paper); }
+  .stat-card--black { background: var(--ink); color: var(--paper); }
+  .stat-num {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.6rem, 4vw, 2.75rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    margin-bottom: 0.5rem;
+    word-break: break-word;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.85;
+  }
+
+  /* ===== GALLERY ===== */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+  .photo-card {
+    border: 4px solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    background: var(--paper);
+    overflow: hidden;
+    position: relative;
+    transition: transform 200ms cubic-bezier(.22,1,.36,1), box-shadow 200ms ease;
+  }
+  .photo-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 11px 11px 0 var(--purple);
+  }
+  .photo-card--1 { grid-column: span 5; }
+  .photo-card--2 { grid-column: span 4; }
+  .photo-card--3 { grid-column: span 3; }
+  .photo-card--4 { grid-column: span 4; }
+  .photo-card--5 { grid-column: span 4; }
+  .photo-card--6 { grid-column: span 4; }
+
+  .photo-frame {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--ink);
+    position: relative;
+    cursor: zoom-in;
+  }
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.1);
+    transition: filter 400ms ease, transform 600ms cubic-bezier(.22,1,.36,1);
+  }
+  .photo-card:hover .photo-frame img {
+    filter: grayscale(0%) contrast(1.05);
+    transform: scale(1.04);
+  }
+  .photo-frame--purple::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--purple);
+    mix-blend-mode: multiply;
+    opacity: 0.25;
+    pointer-events: none;
+    transition: opacity 400ms ease;
+  }
+  .photo-card:hover .photo-frame--purple::after { opacity: 0; }
+
+  .photo-caption {
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 3px solid var(--ink);
+    background: var(--paper);
+  }
+  .photo-caption-kanji {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+  }
+  .photo-caption-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    cursor: zoom-out;
+    backdrop-filter: blur(4px);
+  }
+  .lightbox.is-open {
+    display: flex;
+    animation: fadeIn 300ms ease;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border: 4px solid var(--paper);
+    box-shadow: 12px 12px 0 var(--purple);
+    background: var(--ink);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 48px;
+    height: 48px;
+    background: var(--purple);
+    color: var(--paper);
+    border: 3px solid var(--paper);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--paper);
+    transition: transform 200ms ease;
+  }
+  .lightbox-close:hover {
+    transform: rotate(90deg) scale(1.1);
+  }
+
+  /* ===== VIDEO ===== */
+  .video-block {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    border: 4px solid var(--ink);
+    box-shadow: 12px 12px 0 var(--ink);
+    background: var(--paper);
+    align-items: start;
+  }
+  .video-frame {
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    border-right: 4px solid var(--ink);
+  }
+  .video-frame video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .video-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 96px;
+    height: 96px;
+    background: var(--purple);
+    border: 4px solid var(--paper);
+    box-shadow: 6px 6px 0 var(--ink);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: transform 200ms cubic-bezier(.22,1,.36,1);
+  }
+  .video-play-btn:hover { transform: translate(-50%, -50%) scale(1.08); }
+  .video-play-btn::before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 26px solid var(--paper);
+    border-top: 17px solid transparent;
+    border-bottom: 17px solid transparent;
+    margin-left: 6px;
+  }
+  .video-info {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+  .video-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.4rem 0.7rem;
+    display: inline-block;
+    border: 2px solid var(--ink);
+    align-self: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  .video-title {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.3rem, 3vw, 1.65rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .video-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .video-controls {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: auto;
+    flex-wrap: wrap;
+  }
+  .video-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.7rem 1rem;
+    background: var(--paper);
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink);
+    transition: transform 120ms cubic-bezier(.22,1,.36,1), box-shadow 120ms ease;
+  }
+  .video-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--purple);
+  }
+  .video-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .video-btn--purple { background: var(--purple); color: var(--paper); }
+
+  /* ===== KOTOBA ===== */
+  .kotoba-bg {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .kotoba-bg .section-title { color: var(--paper); }
+  .kotoba-bg .section-num {
+    background: var(--purple);
+    color: var(--paper);
+    box-shadow: 4px 4px 0 var(--paper);
+  }
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .quote-card {
+    background: var(--paper);
+    color: var(--ink);
+    border: 4px solid var(--paper);
+    padding: 2rem;
+    box-shadow: 8px 8px 0 var(--purple);
+    transition: transform 300ms cubic-bezier(.22,1,.36,1);
+    position: relative;
+  }
+  .quote-card:nth-child(2) {
+    background: var(--purple);
+    color: var(--paper);
+    transform: rotate(1deg);
+  }
+  .quote-card:nth-child(3) { transform: rotate(-1deg); }
+  .quote-card:hover { transform: translate(-3px, -3px) rotate(0deg); }
+  .quote-mark {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+    opacity: 0.35;
+  }
+  .quote-kanji {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.8rem, 6vw, 2.25rem);
+    line-height: 1.05;
+    margin-bottom: 0.85rem;
+    letter-spacing: -0.04em;
+  }
+  .quote-reading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+  .quote-text {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
+  }
+  .quote-author {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding-top: 1rem;
+    border-top: 2px dashed currentColor;
+  }
+
+  /* ===== JOIN ===== */
+  .join-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4rem 2rem 2rem;
+  }
+  .footer-inner { max-width: 1400px; margin: 0 auto; }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 2px dashed var(--purple);
+    margin-bottom: 2rem;
+  }
+  .footer-brand {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.03em;
+  }
+  .footer-brand em {
+    color: var(--purple);
+    font-style: italic;
+  }
+  .footer-tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    opacity: 0.7;
+    max-width: 24rem;
+    line-height: 1.65;
+  }
+  .footer-col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--purple);
+    margin-bottom: 1.25rem;
+  }
+  .footer-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+  .footer-list a {
+    color: var(--paper);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    opacity: 0.8;
+    transition: opacity 200ms ease, color 200ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .footer-list a:hover { opacity: 1; color: var(--purple); }
+  .footer-list a::before {
+    content: '→';
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: all 200ms ease;
+  }
+  .footer-list a:hover::before { opacity: 1; transform: translateX(0); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    opacity: 0.6;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* ===== REVEAL ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.is-in { opacity: 1; transform: none; }
+  .reveal[data-delay="1"] { transition-delay: 0.1s; }
+  .reveal[data-delay="2"] { transition-delay: 0.2s; }
+  .reveal[data-delay="3"] { transition-delay: 0.3s; }
+  .reveal[data-delay="4"] { transition-delay: 0.4s; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 960px) {
+    .nav { padding: 0.875rem 1rem; }
+    .nav-inner { gap: 0.75rem; flex-wrap: wrap; }
+    .logo { font-size: 0.85rem; }
+    .logo-mark { width: 34px; height: 34px; font-size: 1.2rem; }
+    .nav-btn { padding: 0.55rem 0.75rem; font-size: 0.68rem; }
+    .nav-btn-arrow { display: none; }
+
+    .hero { padding: 4rem 1.5rem 3rem; }
+    .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-card { transform: rotate(0deg); }
+
+    .section { padding: 4rem 1.5rem; }
+    .section-head { grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 2.5rem; }
+
+    .threads { grid-template-columns: 1fr; }
+    .join-grid { grid-template-columns: 1fr; }
+
+    .gallery-grid { grid-template-columns: 1fr; }
+    .photo-card--1, .photo-card--2, .photo-card--3,
+    .photo-card--4, .photo-card--5, .photo-card--6 { grid-column: span 1; }
+
+    .video-block { grid-template-columns: 1fr; }
+    .video-frame { border-right: none; border-bottom: 4px solid var(--ink); }
+    .video-play-btn { width: 72px; height: 72px; }
+    .video-info { padding: 1.5rem; }
+
+    .quotes-grid { grid-template-columns: 1fr; }
+    .quote-card:nth-child(2), .quote-card:nth-child(3) { transform: none; }
+
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark">語</span>
+      <span>KOMOREBI SPACE BELITANG</span>
+    </a>
+    <div class="nav-links">
+      <a href="https://chat.whatsapp.com/GeJKvD68gOnGo8vCCff0RX?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener" class="nav-btn">
+        GrubWa <span class="nav-btn-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div>
+      <span class="hero-eyebrow">木漏れ日 フォーラム · sejak 2026</span>
+      <h1 class="hero-title">
+        <span class="line"><span class="word">日本語を</span></span>
+        <span class="line"><span class="word">学ぼう。<span class="accent">一緒に。</span></span></span>
+      </h1>
+      <p class="hero-sub">
+        Forum komunitas belajar bahasa jepang untuk daerah Belitang dan sekitarnya, disini kita belajar bareng, sharing dan bersama sama mewujudkan mimpi ke Jepang, Aminn.
+      </p>
+      <div class="hero-meta">
+        <span class="meta-chip meta-chip--live">3 Member</span>
+        <span class="meta-chip">100% diskusi</span>
+        <span class="meta-chip">JLPT/JFT</span>
+      </div>
+    </div>
+
+    <aside class="hero-card">
+      <div class="hero-card-label">KATA HARI INI · 本日の言葉</div>
+      <div class="hero-card-kanji">日本に行きたい</div>
+      <div class="hero-card-reading">夢がある · yume ga aru</div>
+      <div class="hero-card-meaning">Ayok teman teman semua semangat belajar bahasa Jepangnya, mungkin kita pikir mimpi itu terlalu tinggi, tapi kita harus yakin, bahwa mimpi itu pasti akan tercapai ketika kita berusaha, entah Tahun ini, Tahun depan, ataupun Tahun berikutnya yang akan datang, jadi tetap semangat ya</div>
+      <div class="hero-card-footer">
+        <span>Ganbatte</span>
+        <span>Minna San</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>週末ミートアップ</span>
+    <span>Kanji mingguan · 風</span>
+    <span>Latihan baca    </span>
+    <span>無料 · gratis selamanya</span>
+    <span>言語交換 · tukar bahasa</span>
+    <span>週末ミートアップ</span>
+    <span>Kanji mingguan · 風</span>
+    <span>Latihan baca   </span>
+    <span>無料 · gratis selamanya</span>
+    <span>言語交換 · tukar bahasa</span>
+  </div>
+</div>
+
+<!-- ===== DISKUSI ===== -->
+<section class="section">
+  <div class="section-inner">
+    <header class="section-head reveal">
+      <span class="section-num">01 / 05</span>
+      <h2 class="section-title">Informasi<em> Basic</em></h2>
+    </header>
+
+    <div class="threads">
+      <article class="thread reveal" data-delay="1">
+        <span class="thread-tag">文法 · tata bahasa</span>
+        <h3 class="thread-title">Apa yang dimaksud tata bahasa?</h3>
+        <div class="thread-meta">
+          <span>#diskusi-2841</span>
+          <span>3 jam lalu</span>
+          <span>oleh komoさん</span>
+        </div>
+        <p class="thread-snippet">aturan dan struktur yang dipakai untuk menyusun kata-kata menjadi kalimat yang bermakna dalam bahasa Jepang...</p>
+        <div class="thread-foot">
+          <div class="thread-author">
+            <!-- Ganti URL foto profil di sini -->
+            <span class="author-avatar">
+              <img src="icon2/komo.png" alt="Foto yuki">
+            </span>
+            <span>@komo_san</span>
+          </div>
+          <div class="thread-stats">
+            <span>↑ 41</span>
+            <span>↳ 87 balasan</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="thread reveal" data-delay="2">
+        <span class="thread-tag thread-tag--black">漢字 · kanji</span>
+        <h3 class="thread-title">Apa yang dimaksud kanji?</h3>
+        <div class="thread-meta">
+          <span>#diskusi-2840</span>
+          <span>6 jam lalu</span>
+          <span>oleh komoさん</span>
+        </div>
+        <p class="thread-snippet">Kanji adalah aksara logogram dalam sistem penulisan bahasa Jepang yang diadopsi dari karakter Tiongkok...</p>
+        <div class="thread-foot">
+          <div class="thread-author">
+            <!-- Ganti URL foto profil di sini -->
+            <span class="author-avatar author-avatar--black">
+              <img src="icon2/komo.png" alt="Foto haruto">
+            </span>
+            <span>@komo_san</span>
+          </div>
+          <div class="thread-stats">
+            <span>↑ 81</span>
+            <span>↳ 142 balasan</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="thread reveal" data-delay="3">
+        <span class="thread-tag thread-tag--white">聴解 · mendengarkan</span>
+        <h3 class="thread-title">Apa yang dimaksud dengan Choukai?</h3>
+        <div class="thread-meta">
+          <span>#diskusi-2839</span>
+          <span>1 hari lalu</span>
+          <span>oleh komoさん</span>
+        </div>
+        <p class="thread-snippet">Choukai berarti kemampuan memahami percakapan, ceramah, atau diskusi lisan dalam bahasa Jepang. Peserta tes harus mendengarkan audio lalu menjawab pertanyaan sesuai situasi yang didengar....</p>
+        <div class="thread-foot">
+          <div class="thread-author">
+            <!-- Ganti URL foto profil di sini -->
+            <span class="author-avatar author-avatar--white">
+              <img src="icon2/komo.png" alt="Foto saya">
+            </span>
+            <span>@komo_san</span>
+          </div>
+          <div class="thread-stats">
+            <span>↑ 23</span>
+            <span>↳ 51 balasan</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="thread reveal" data-delay="4">
+        <span class="thread-tag">平仮名 · Hiragana</span>
+        <h3 class="thread-title">Apa yang dimaksud hiragana?</h3>
+        <div class="thread-meta">
+          <span>#diskusi-2838</span>
+          <span>1 hari lalu</span>
+          <span>oleh komoさん</span>
+        </div>
+        <p class="thread-snippet">Hiragana adalah salah satu dari tiga sistem penulisan utama dalam bahasa Jepang yang berfungsi sebagai huruf fonetik untuk mewakili bunyi atau suku kata...</p>
+        <div class="thread-foot">
+          <div class="thread-author">
+            <!-- Ganti URL foto profil di sini -->
+            <span class="author-avatar">
+              <img src="icon2/komo.png" alt="Foto kenji">
+            </span>
+            <span>@komo_san</span>
+          </div>
+          <div class="thread-stats">
+            <span>↑ 66</span>
+            <span>↳ 38 balasan</span>
+          </div>
+        </div>
+      </article>
+      
+      <article class="thread reveal" data-delay="5">
+        <span class="thread-tag thread-tag--black">カタカナ · katakana</span>
+        <h3 class="thread-title">Apa yang dimaksud katakana?</h3>
+        <div class="thread-meta">
+          <span>#diskusi-2837</span>
+          <span>2 hari lalu</span>
+          <span>oleh komoさん</span>
+        </div>
+        <p class="thread-snippet">Katakana adalah salah satu daripada tiga cara penulisan bahasa Jepang. Katakana biasanya digunakan untuk menulis kata-kata yang berasal dari bahasa asing yang sudah diserap ke dalam bahasa Jepang (外来語/gairaigo) selain itu juga digunakan untuk menuliskan onomatope dan kata-kata asli bahasa Jepang, hal ini hanya bersifat penegasan saja...</p>
+        <div class="thread-foot">
+          <div class="thread-author">
+            <!-- Ganti URL foto profil di sini -->
+            <span class="author-avatar author-avatar--black">
+              <img src="icon2/komo.png" alt="Foto haruto">
+            </span>
+            <span>@komo_san</span>
+          </div>
+          <div class="thread-stats">
+            <span>↑ 89</span>
+            <span>↳ 12 balasan</span>
+          </div>
+        </div>
+      </article>
+      
+      
+      <article class="thread reveal" data-delay="6">
+        <span class="thread-tag thread-tag--white">助詞 · partikel</span>
+        <h3 class="thread-title">Apa yang dimaksud partikel?</h3>
+        <div class="thread-meta">
+          <span>#diskusi-2836</span>
+          <span>2 hari lalu</span>
+          <span>oleh komoさん</span>
+        </div>
+        <p class="thread-snippet">Partikel bahasa Jepang (joshi) adalah kata bantu kecil yang diletakkan di belakang kata benda, kata kerja, atau kata sifat untuk menunjukkan fungsi kata tersebut dalam kalimat...</p>
+        <div class="thread-foot">
+          <div class="thread-author">
+            <!-- Ganti URL foto profil di sini -->
+            <span class="author-avatar author-avatar--black">
+              <img src="icon2/komo.png" alt="Foto haruto">
+            </span>
+            <span>@komo_san</span>
+          </div>
+          <div class="thread-stats">
+            <span>↑ 79</span>
+            <span>↳ 198 balasan</span>
+          </div>
+        </div>
+      </article>
+      
+      <article class="thread reveal" data-delay="1">
+        <span class="thread-tag">会話 · Kaiwa</span>
+        <h3 class="thread-title">Apa yang dimaksud kaiwa?</h3>
+        <div class="thread-meta">
+          <span>#diskusi-2835</span>
+          <span>3 hari lalu</span>
+          <span>oleh komoさん</span>
+        </div>
+        <p class="thread-snippet">Kaiwa adalah istilah dalam bahasa Jepang yang berarti percakapan, dialog, atau obrolan lisan antara dua orang atau lebih...</p>
+        <div class="thread-foot">
+          <div class="thread-author">
+            <!-- Ganti URL foto profil di sini -->
+            <span class="author-avatar">
+              <img src="icon2/komo.png" alt="Foto yuki">
+            </span>
+            <span>@komo_san</span>
+          </div>
+          <div class="thread-stats">
+            <span>↑ 98</span>
+            <span>↳ 97 balasan</span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card reveal">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Anggota online</div>
+      </div>
+      <div class="stat-card stat-card--purple reveal" data-delay="1">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Diskusi aktif</div>
+      </div>
+      <div class="stat-card stat-card--black reveal" data-delay="2">
+        <div class="stat-num">80%</div>
+        <div class="stat-label">Dijawab &lt; 1 jam</div>
+      </div>
+      <div class="stat-card reveal" data-delay="3">
+        <div class="stat-num">N5→N1</div>
+        <div class="stat-label">Semua level</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GALLERY ===== -->
+<section class="section">
+  <div class="section-inner">
+    <header class="section-head reveal">
+      <span class="section-num">02 / 05</span>
+      <h2 class="section-title">Pemandangan<em> komunitas</em></h2>
+    </header>
+
+    <div class="gallery-grid">
+      <figure class="photo-card photo-card--1 reveal">
+        <div class="photo-frame photo-frame--purple">
+          <img src="icon2/fotowebforum/a2.jpg" alt="Tokyo meetup">
+        </div>
+        <figcaption class="photo-caption">
+          <span class="photo-caption-kanji">1</span>
+          <span class="photo-caption-meta">Latihan soal<br>2026.09.12</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card photo-card--6 reveal" data-delay="2">
+        <div class="photo-frame">
+          <img src="icon2/fotowebforum/a1.jpg" alt="Rak buku">
+        </div>
+        <figcaption class="photo-caption">
+          <span class="photo-caption-kanji">2</span>
+          <span class="photo-caption-meta">Choukai<br>2026.09.07</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VIDEO ===== -->
+<section class="section">
+  <div class="section-inner">
+    <header class="section-head reveal">
+      <span class="section-num">03 / 05</span>
+      <h2 class="section-title">Pelajaran<em> minggu ini</em></h2>
+    </header>
+
+    <div class="video-block reveal">
+      <div class="video-frame" id="videoFrame">
+        <video id="customVideo" poster="https://picsum.photos/seed/komorebi-lesson-poster-classroom/1280/720" preload="metadata" playsinline>
+          <source src="vd/forumgrub/ok.mp4" type="video/mp4">
+          Browser kamu tidak mendukung tag video.
+        </video>
+        <button class="video-play-btn" id="playBtn" aria-label="Putar video"></button>
+      </div>
+      <div class="video-info">
+        <span class="video-tag">Perkenalan</span>
+        <h3 class="video-title">Mohon maklum</h3>
+        <p class="video-desc">
+           Penjelasan singkat padat, nggak jelas, sorry guys, next bakal buat videonya.
+        </p>
+        <div class="video-controls">
+          <button class="video-btn video-btn--purple" id="playToggle">Putar pelajaran</button>
+          <button class="video-btn" id="muteToggle">Bisukan</button>
+          <button class="video-btn" id="restartToggle">Ulangi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KOTOBA ===== -->
+<section class="section kotoba-bg">
+  <div class="section-inner">
+    <header class="section-head reveal">
+      <span class="section-num">04 / 05</span>
+      <h2 class="section-title">Kata-kata<em> bijak</em></h2>
+    </header>
+
+    <div class="quotes-grid">
+      <article class="quote-card reveal">
+        <div class="quote-mark">「</div>
+        <div class="quote-kanji">七転び八起き</div>
+        <div class="quote-reading">ななころびやおき · nanakorobi yaoki</div>
+        <p class="quote-text">"Jatuh tujuh kali, bangun delapan kali." Peribahasa Jepang tentang ketangguhan — dalam belajar bahasa, mengingat bahwa lupa satu kanji 7 kali bukan kegagalan, itu metodenya.</p>
+        <div class="quote-author">— Peribahasa · ことわざ</div>
+      </article>
+
+      <article class="quote-card reveal" data-delay="1">
+        <div class="quote-mark">「</div>
+        <div class="quote-kanji">一期一会</div>
+        <div class="quote-reading">いちごいちえ · ichigo ichie</div>
+        <p class="quote-text">"Sekali bertemu, sekali jumpa." Setiap pertemuan terjadi satu kali dan gak akan pernah terulang dalam bentuk yang sama. Minum tehnya. Jawab pertanyaannya. Jangan skip meetup-nya.</p>
+        <div class="quote-author">— Upacara teh · 茶道</div>
+      </article>
+
+      <article class="quote-card reveal" data-delay="2">
+        <div class="quote-mark">「</div>
+        <div class="quote-kanji">石の上にも三年</div>
+        <div class="quote-reading">いしのうえにもさんねん · ishi no ue ni mo sannen</div>
+        <p class="quote-text">"Tiga tahun di atas batu." Batu terdingin pun jadi hangat kalau kamu duduk di atasnya cukup lama. Kesabaran sebagai latihan harian — diterapkan di sini ke partikel tata bahasa.</p>
+        <div class="quote-author">— Peribahasa · ことわざ</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== JOIN ===== -->
+<section class="section">
+  <div class="section-inner">
+    <header class="section-head reveal">
+      <span class="section-num">05 / 05</span>
+      <h2 class="section-title">Cara<em> bergabung</em></h2>
+    </header>
+
+    <div class="join-grid">
+      <a href="https://chat.whatsapp.com/GeJKvD68gOnGo8vCCff0RX?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener" class="thread reveal">
+        <span class="thread-tag">langkah 01</span>
+        <h3 class="thread-title">Gabung Grub WA</h3>
+        <p class="thread-snippet">Disini kita nimbrung bareng, terus bahas materi bahasa jepang lah pokoknya.</p>
+        <div class="thread-foot">
+          <span class="thread-author" style="font-family:'JetBrains Mono',monospace;">wagrub/japanese</span>
+          <span class="thread-stats">→ gabung</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">日本語を<em>学ぼう</em>。</div>
+        <p class="footer-tagline">Forum komunitas belajar bahasa Jepang daerah belitang, sejak Tahun 2026.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Forum</div>
+        <ul class="footer-list">
+          <li><a href="#">Informasi Bahasa Jepang</a></li>
+          <li><a href="#">Area Belitang</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Apk Bermanfaat</div>
+        <ul class="footer-list">
+          <li><a href="https://play.google.com/store/apps/details?id=com.porolingo.kanji" target="_blank" rel="noopener">Poro Kanji ↗</a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=com.mazii.dictionary" target="_blank" rel="noopener">Mazii ↗</a></li>
+          <li><a href="https://play.google.com/store/apps/details?id=com.eup.mytest" target="_blank" rel="noopener">Migi Jlpt ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Tentang</div>
+        <ul class="footer-list">
+          <li><a href="#">Choukai</a></li>
+          <li><a href="#">Kanji</a></li>
+          <li><a href="#">Kaiwa</a></li>
+          <li><a href="#">Bunpou</a></li>
+          <li><a href="#">Partikel</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 KOMOREBI · dibangun oleh kita semua</span>
+      <span>お疲れ様でした</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ===== Reveal saat scroll =====
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  reveals.forEach(el => io.observe(el));
+
+  // ===== Video player custom =====
+  const video = document.getElementById('customVideo');
+  const playBtn = document.getElementById('playBtn');
+  const playToggle = document.getElementById('playToggle');
+  const muteToggle = document.getElementById('muteToggle');
+  const restartToggle = document.getElementById('restartToggle');
+
+  let isPlaying = false;
+
+  function togglePlay() {
+    if (!video) return;
+    if (isPlaying) {
+      video.pause();
+      playBtn.style.display = 'grid';
+      playToggle.textContent = 'Putar pelajaran';
+    } else {
+      video.play().catch(() => {});
+      playBtn.style.display = 'none';
+      playToggle.textContent = 'Jeda';
+    }
+    isPlaying = !isPlaying;
+  }
+
+  if (playBtn) playBtn.addEventListener('click', togglePlay);
+  if (playToggle) playToggle.addEventListener('click', togglePlay);
+
+  if (muteToggle) {
+    muteToggle.addEventListener('click', () => {
+      video.muted = !video.muted;
+      muteToggle.textContent = video.muted ? 'Bunyikan' : 'Bisukan';
+    });
+  }
+
+  if (restartToggle) {
+    restartToggle.addEventListener('click', () => {
+      video.currentTime = 0;
+      if (!isPlaying) {
+        video.play().catch(() => {});
+        isPlaying = true;
+        playBtn.style.display = 'none';
+        playToggle.textContent = 'Jeda';
+      }
+    });
+  }
+
+  if (video) {
+    video.addEventListener('ended', () => {
+      isPlaying = false;
+      playBtn.style.display = 'grid';
+      playToggle.textContent = 'Putar ulang';
+    });
+  }
+
+  // ===== Lightbox Foto =====
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  lightbox.innerHTML = `
+    <button class="lightbox-close" aria-label="Tutup">×</button>
+    <img class="lightbox-img" src="" alt="Foto besar">
+  `;
+  document.body.appendChild(lightbox);
+
+  const lightboxImg = lightbox.querySelector('.lightbox-img');
+  const lightboxClose = lightbox.querySelector('.lightbox-close');
+
+  document.querySelectorAll('.photo-frame img').forEach(img => {
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Gunakan ukuran besar dari picsum untuk gambar pop-up
+      let bigSrc = img.src;
+      lightboxImg.src = bigSrc;
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === lightboxClose || e.target.classList.contains('lightbox-img') === false) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('is-open')) {
+      closeLightbox();
+    }
+  });
+
+  // ===== Smooth scroll untuk anchor =====
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (id === '#' || id.length < 2) return;
+      const el = document.querySelector(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
